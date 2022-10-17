@@ -139,6 +139,7 @@ func main() {
 
 	// run main window
 	mainWindow.SetMaster()
+	mainWindow.SetIcon(resourceIconPng)
 	mainWindow.Resize(fyne.NewSize(960, 610))
 	mainWindow.Show()
 	app.Run()

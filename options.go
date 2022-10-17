@@ -16,12 +16,12 @@ func showOptions(app fyne.App) {
 	// create max bitrate widget and set validator to only allow numbers
 	maxBitrate := widget.NewEntry()
 	maxBitrate.SetText(strconv.Itoa(maxB))
-	maxBitrate.Validator = validation.NewRegexp(`^[0-9]*$`, "Please enter a valid number")
+	maxBitrate.Validator = validation.NewRegexp(`^[0-9]*$`, "Please enter a valid whole number")
 
 	// create min bitrate widget and set validator to only allow numbers
 	minBitrate := widget.NewEntry()
 	minBitrate.SetText(strconv.Itoa(minB))
-	minBitrate.Validator = validation.NewRegexp(`^[0-9]*$`, "Please enter a valid number")
+	minBitrate.Validator = validation.NewRegexp(`^[0-9]*$`, "Please enter a valid whole number")
 
 	// create checkbox to exclude bitrates of zero
 	excludeZero := widget.NewCheck("", func(b bool) {})
@@ -51,6 +51,7 @@ func showOptions(app fyne.App) {
 
 	// run window
 	optionsWindow.SetContent(content)
+	optionsWindow.SetIcon(resourceIconPng)
 	optionsWindow.Resize(fyne.NewSize(400, 200))
 	optionsWindow.SetFixedSize(true)
 	optionsWindow.Show()

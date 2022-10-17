@@ -4,3 +4,5 @@
 !go.sum
 !main.go
 !options.go
+!icon.go
+!Icon.png
