@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"syscall"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -83,8 +84,10 @@ func main() {
 					return nil
 				}
 
-				// execute command to find bitrate and handle error
-				output, err := exec.Command("cmd", "/c", "ffprobe", "-v", "error", "-show_entries", "format=bit_rate", "-of", "default=noprint_wrappers=1:nokey=1", path).Output()
+				// execute command (without cmd window) to find bitrate and handle error
+				command := exec.Command("cmd", "/c", "ffprobe", "-v", "error", "-show_entries", "format=bit_rate", "-of", "default=noprint_wrappers=1:nokey=1", path)
+				command.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+				output, err := command.Output()
 				if err != nil {
 					return err
 				}
