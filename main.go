@@ -15,7 +15,6 @@ import (
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
-	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -139,10 +138,12 @@ func main() {
 	run.Importance = widget.HighImportance
 
 	// create path entry field and folder selection button layout
-	entryLayout := container.New(
-		layout.NewHBoxLayout(),
-		path,
+	entryLayout := container.NewBorder(
+		nil,
+		nil,
+		nil,
 		folderSelect,
+		path,
 	)
 
 	// create main window layout
