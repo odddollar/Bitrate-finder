@@ -130,6 +130,10 @@ func main() {
 			if err != nil {
 				panic(err)
 			}
+
+			// add completion message
+			outputText = "Complete\n" + outputText
+			outputBox.SetText(outputText)
 		}()
 	})
 	run.Importance = widget.HighImportance
