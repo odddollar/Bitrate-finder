@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"image/color"
 	"io/fs"
 	"os/exec"
 	"path/filepath"
@@ -11,6 +12,7 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/layout"
@@ -27,6 +29,12 @@ func main() {
 	// create app
 	app := app.New()
 	mainWindow := app.NewWindow("Bitrate Finder")
+
+	// create title widget
+	title := canvas.NewText("Bitrate Finder", color.Black)
+	title.Alignment = fyne.TextAlignCenter
+	title.TextStyle = fyne.TextStyle{Bold: true}
+	title.TextSize = 20
 
 	// create path entry widget
 	path := widget.NewEntry()
@@ -124,6 +132,7 @@ func main() {
 			}
 		}()
 	})
+	run.Importance = widget.HighImportance
 
 	// create path entry field and folder selection button layout
 	entryLayout := container.New(
@@ -134,6 +143,7 @@ func main() {
 
 	// create main window layout
 	mainWindow.SetContent(container.NewVBox(
+		title,
 		entryLayout,
 		options,
 		run,
