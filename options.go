@@ -1,9 +1,11 @@
 package main
 
 import (
+	"image/color"
 	"strconv"
 
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/validation"
 	"fyne.io/fyne/v2/widget"
@@ -12,6 +14,12 @@ import (
 func showOptions(app fyne.App) {
 	// create new window from main app
 	optionsWindow := app.NewWindow("Options")
+
+	// create title and set styling
+	title := canvas.NewText("Options", color.Black)
+	title.Alignment = fyne.TextAlignCenter
+	title.TextStyle.Bold = true
+	title.TextSize = 20
 
 	// create max bitrate widget and set validator to only allow numbers
 	maxBitrate := widget.NewEntry()
@@ -45,7 +53,8 @@ func showOptions(app fyne.App) {
 
 	// create main layout with additional information label
 	content := container.NewVBox(
-		widget.NewLabelWithStyle("Enter 0 to remove limit", fyne.TextAlignCenter, fyne.TextStyle{Bold: true}),
+		title,
+		widget.NewLabelWithStyle("Enter 0 to remove limit", fyne.TextAlignLeading, fyne.TextStyle{Bold: true}),
 		options,
 	)
 

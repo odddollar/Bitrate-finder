@@ -33,7 +33,7 @@ func main() {
 	// create title widget
 	title := canvas.NewText("Bitrate Finder", color.Black)
 	title.Alignment = fyne.TextAlignCenter
-	title.TextStyle = fyne.TextStyle{Bold: true}
+	title.TextStyle.Bold = true
 	title.TextSize = 20
 
 	// create path entry widget
