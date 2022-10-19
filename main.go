@@ -71,7 +71,8 @@ func main() {
 	outputBox.SetMinRowsVisible(21)
 
 	// create run button widget
-	run := widget.NewButton("Run", func() {
+	var run *widget.Button
+	run = widget.NewButton("Run", func() {
 		// don't do anything if no path entered
 		if path.Text == "" {
 			return
@@ -79,6 +80,9 @@ func main() {
 
 		// run as separate thread
 		go func() {
+			// disable button to prevent re-running until complete
+			run.Disable()
+
 			// walk through selected directory
 			err := filepath.Walk(path.Text, func(path string, info fs.FileInfo, err error) error {
 				// return errors that occur
@@ -133,6 +137,9 @@ func main() {
 			// add completion message
 			outputText = "Complete\n" + outputText
 			outputBox.SetText(outputText)
+
+			// re-enable run button
+			run.Enable()
 		}()
 	})
 	run.Importance = widget.HighImportance
