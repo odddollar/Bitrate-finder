@@ -35,6 +35,10 @@ func main() {
 	title.TextStyle.Bold = true
 	title.TextSize = 20
 
+	// create progress bar
+	progress := widget.NewProgressBar()
+	progress.Value = 0
+
 	// create path entry widget
 	path := widget.NewEntry()
 	path.SetPlaceHolder("Path to videos")
@@ -55,6 +59,11 @@ func main() {
 
 			// set formatted text in folder field
 			path.SetText(formattedText)
+
+			// set progress bar maximum value
+			go func() {
+				progress.Max = float64(getNumFiles(formattedText))
+			}()
 		}, mainWindow)
 
 		// show folder selection dialog
@@ -102,6 +111,9 @@ func main() {
 				if err != nil {
 					return err
 				}
+
+				// increase progress bar
+				progress.SetValue(progress.Value + 1)
 
 				// convert bitrate found to kilobits per second
 				bitrateKilobitsS, _ := strconv.Atoi(strings.TrimSpace(string(output)))
@@ -160,6 +172,7 @@ func main() {
 		options,
 		run,
 		outputBox,
+		progress,
 	))
 
 	// run main window
@@ -168,4 +181,30 @@ func main() {
 	mainWindow.Resize(fyne.NewSize(960, 610))
 	mainWindow.Show()
 	app.Run()
+}
+
+func getNumFiles(path string) int {
+	count := 0
+
+	// walk path and count number of files
+	err := filepath.Walk(path, func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// ignore directories
+		if info.IsDir() {
+			return nil
+		}
+
+		count++
+
+		return nil
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
+	return count
 }
