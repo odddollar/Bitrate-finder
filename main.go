@@ -77,7 +77,6 @@ func main() {
 
 	// create output box with minimum number of rows visible
 	outputBox := widget.NewMultiLineEntry()
-	outputBox.SetMinRowsVisible(21)
 
 	// create run button widget
 	var run *widget.Button
@@ -166,13 +165,17 @@ func main() {
 	)
 
 	// create main window layout
-	mainWindow.SetContent(container.NewVBox(
-		title,
-		entryLayout,
-		options,
-		run,
-		outputBox,
+	mainWindow.SetContent(container.NewBorder(
+		container.NewVBox(
+			title,
+			entryLayout,
+			options,
+			run,
+		),
 		progress,
+		nil,
+		nil,
+		outputBox,
 	))
 
 	// run main window
