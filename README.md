@@ -11,6 +11,7 @@ Prebuilt Windows binaries are available from the GitHub page.
 - Listing bitrate of all files in a given directory
 - Setting optional maximum and minimum bitrate filters
 - Ability to exclude files with a bitrate of 0Kb/s (``ffprobe`` returns 0Kb/s for non-video/audio files)
+- Progress tracking to view completion percentage
 
 ## Building
 
