@@ -168,6 +168,14 @@ func main() {
 		path,
 	)
 
+	// top layout containing main widgets
+	topLayout := container.NewVBox(
+		title,
+		entryLayout,
+		options,
+		run,
+	)
+
 	// create bottom layout containing progress bar and export csv button
 	bottomLayout := container.NewBorder(
 		nil,
@@ -179,12 +187,7 @@ func main() {
 
 	// create main window layout
 	mainWindow.SetContent(container.NewBorder(
-		container.NewVBox(
-			title,
-			entryLayout,
-			options,
-			run,
-		),
+		topLayout,
 		bottomLayout,
 		nil,
 		nil,
