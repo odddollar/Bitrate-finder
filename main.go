@@ -155,6 +155,10 @@ func main() {
 	})
 	run.Importance = widget.HighImportance
 
+	exportCSV := widget.NewButton("Export to CSV", func() {
+
+	})
+
 	// create path entry field and folder selection button layout
 	entryLayout := container.NewBorder(
 		nil,
@@ -162,6 +166,15 @@ func main() {
 		nil,
 		folderSelect,
 		path,
+	)
+
+	// create bottom layout containing progress bar and export csv button
+	bottomLayout := container.NewBorder(
+		nil,
+		nil,
+		nil,
+		exportCSV,
+		progress,
 	)
 
 	// create main window layout
@@ -172,7 +185,7 @@ func main() {
 			options,
 			run,
 		),
-		progress,
+		bottomLayout,
 		nil,
 		nil,
 		outputBox,
