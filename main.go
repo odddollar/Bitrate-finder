@@ -78,6 +78,11 @@ func main() {
 	// create output box with minimum number of rows visible
 	outputBox := widget.NewMultiLineEntry()
 
+	// button that exports output box content to csv
+	exportCSV := widget.NewButton("Export to CSV", func() {
+
+	})
+
 	// create run button widget
 	var run *widget.Button
 	run = widget.NewButton("Run", func() {
@@ -88,8 +93,9 @@ func main() {
 
 		// run as separate thread
 		go func() {
-			// disable button to prevent re-running until complete
+			// disable button to prevent re-running and exporting until complete
 			run.Disable()
+			exportCSV.Disable()
 
 			// walk through selected directory
 			err := filepath.Walk(path.Text, func(path string, info fs.FileInfo, err error) error {
@@ -149,15 +155,12 @@ func main() {
 			outputText = "Complete\n" + outputText
 			outputBox.SetText(outputText)
 
-			// re-enable run button
+			// re-enable buttons
 			run.Enable()
+			exportCSV.Enable()
 		}()
 	})
 	run.Importance = widget.HighImportance
-
-	exportCSV := widget.NewButton("Export to CSV", func() {
-
-	})
 
 	// create path entry field and folder selection button layout
 	entryLayout := container.NewBorder(
