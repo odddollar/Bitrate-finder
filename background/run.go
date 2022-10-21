@@ -35,20 +35,14 @@ func RunCallback() {
 				return nil
 			}
 
-			// execute command (without cmd window) to find bitrate and handle error
-			command := exec.Command("cmd", "/c", "ffprobe", "-v", "error", "-show_entries", "format=bit_rate", "-of", "default=noprint_wrappers=1:nokey=1", path)
-			command.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
-			output, err := command.Output()
-			if err != nil {
-				return err
-			}
-
 			// increase progress bar
 			global.Progress.SetValue(global.Progress.Value + 1)
 
-			// convert bitrate found to kilobits per second
-			bitrateKilobitsS, _ := strconv.Atoi(strings.TrimSpace(string(output)))
-			bitrateKilobitsS /= 1000
+			// get bitrate in kilobits/s
+			bitrateKilobitsS, err := getBitrate(path)
+			if err != nil {
+				return err
+			}
 
 			// ignore file if bitrate is zero and options set to ignore zero values
 			if bitrateKilobitsS == 0 && global.IgnoreZero {
@@ -85,4 +79,20 @@ func RunCallback() {
 		global.Run.Enable()
 		global.ExportCSV.Enable()
 	}()
+}
+
+func getBitrate(path string) (int, error) {
+	// execute command (without cmd window) to find bitrate and handle error
+	command := exec.Command("cmd", "/c", "ffprobe", "-v", "error", "-show_entries", "format=bit_rate", "-of", "default=noprint_wrappers=1:nokey=1", path)
+	command.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	output, err := command.Output()
+	if err != nil {
+		return 0, err
+	}
+
+	// convert bitrate to kilobits per second
+	bitrate, _ := strconv.Atoi(strings.TrimSpace(string(output)))
+	bitrate /= 1000
+
+	return bitrate, nil
 }
