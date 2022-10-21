@@ -24,3 +24,7 @@ cd Bitrate-finder
 go install fyne.io/fyne/v2/cmd/fyne@latest // installs the necessary Fyne tooling
 fyne package
 ```
+
+## Screenshots
+
+![Main window](screenshots/main.png)
