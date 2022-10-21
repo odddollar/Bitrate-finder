@@ -24,14 +24,3 @@ cd Bitrate-finder
 go install fyne.io/fyne/v2/cmd/fyne@latest // installs the necessary Fyne tooling
 fyne package
 ```
-
-### Note: Static content
-
-**This is only necessary if `Icon.png` has been modified.**
-
-In order to use ``Icon.png`` as the icon for Bitrate Finder, it is necessary to bundle it to a ``.go`` file. Fyne's tooling provides an easy way to do this:
-
-```
-fyne bundle Icon.png >> icon.go
-```
-
