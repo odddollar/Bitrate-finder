@@ -25,27 +25,39 @@ var maxB int = 0
 var minB int = 0
 var ignoreZero bool = true
 
+// declare globals for main ui
+var a fyne.App
+var mainWindow fyne.Window
+var title *canvas.Text
+var path *widget.Entry
+var folderSelect *widget.Button
+var options *widget.Button
+var run *widget.Button
+var outputBox *widget.Entry
+var exportCSV *widget.Button
+var progress *widget.ProgressBar
+
 func main() {
 	// create app
-	app := app.New()
-	mainWindow := app.NewWindow("Bitrate Finder")
+	a = app.New()
+	mainWindow = a.NewWindow("Bitrate Finder")
 
 	// create title widget
-	title := canvas.NewText("Bitrate Finder", color.Black)
+	title = canvas.NewText("Bitrate Finder", color.Black)
 	title.Alignment = fyne.TextAlignCenter
 	title.TextStyle.Bold = true
 	title.TextSize = 20
 
 	// create progress bar
-	progress := widget.NewProgressBar()
+	progress = widget.NewProgressBar()
 	progress.Value = 0
 
 	// create path entry widget
-	path := widget.NewEntry()
+	path = widget.NewEntry()
 	path.SetPlaceHolder("Path to videos")
 
 	// create folder selection button widget
-	folderSelect := widget.NewButton("...", func() {
+	folderSelect = widget.NewButton("...", func() {
 		// create dialog with callback
 		d := dialog.NewFolderOpen(func(lu fyne.ListableURI, err error) {
 			// check if nothing has been selected
@@ -72,15 +84,15 @@ func main() {
 	})
 
 	// create options button to open options window
-	options := widget.NewButton("Options", func() {
-		showOptions(app)
+	options = widget.NewButton("Options", func() {
+		showOptions(a)
 	})
 
 	// create output box with minimum number of rows visible
-	outputBox := widget.NewMultiLineEntry()
+	outputBox = widget.NewMultiLineEntry()
 
 	// button that exports output box content to csv
-	exportCSV := widget.NewButton("Export to CSV", func() {
+	exportCSV = widget.NewButton("Export to CSV", func() {
 		// don't do anything if nothing in output box
 		if outputText == "" {
 			return
@@ -114,7 +126,6 @@ func main() {
 	})
 
 	// create run button widget
-	var run *widget.Button
 	run = widget.NewButton("Run", func() {
 		// don't do anything if no path entered
 		if path.Text == "" {
@@ -232,7 +243,7 @@ func main() {
 	mainWindow.SetIcon(resourceIconPng)
 	mainWindow.Resize(fyne.NewSize(960, 610))
 	mainWindow.Show()
-	app.Run()
+	a.Run()
 }
 
 func getNumFiles(path string) int {
