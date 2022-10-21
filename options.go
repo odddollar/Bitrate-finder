@@ -11,6 +11,10 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
+func optionsCallback() {
+	showOptions(a)
+}
+
 func showOptions(app fyne.App) {
 	// create new window from main app
 	optionsWindow := app.NewWindow("Options")
