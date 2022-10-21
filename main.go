@@ -34,8 +34,8 @@ var folderSelect *widget.Button
 var options *widget.Button
 var run *widget.Button
 var outputBox *widget.Entry
-var exportCSV *widget.Button
 var progress *widget.ProgressBar
+var exportCSV *widget.Button
 
 // initialise main ui widgets
 func init() {
@@ -49,10 +49,6 @@ func init() {
 	title.TextStyle.Bold = true
 	title.TextSize = 20
 
-	// create progress bar
-	progress = widget.NewProgressBar()
-	progress.Value = 0
-
 	// create path entry widget
 	path = widget.NewEntry()
 	path.SetPlaceHolder("Path to videos")
@@ -63,46 +59,41 @@ func init() {
 	// create options button to open options window
 	options = widget.NewButton("Options", optionsCallback)
 
-	// create output box with minimum number of rows visible
-	outputBox = widget.NewMultiLineEntry()
-
-	// button that exports output box content to csv
-	exportCSV = widget.NewButton("Export to CSV", exportCallback)
-
 	// create run button widget
 	run = widget.NewButton("Run", runCallback)
 	run.Importance = widget.HighImportance
 
-	// create path entry field and folder selection button layout
-	entryLayout := container.NewBorder(
-		nil,
-		nil,
-		nil,
-		folderSelect,
-		path,
-	)
+	// create output box with minimum number of rows visible
+	outputBox = widget.NewMultiLineEntry()
 
-	// top layout containing main widgets
-	topLayout := container.NewVBox(
-		title,
-		entryLayout,
-		options,
-		run,
-	)
+	// create progress bar
+	progress = widget.NewProgressBar()
+	progress.Value = 0
 
-	// create bottom layout containing progress bar and export csv button
-	bottomLayout := container.NewBorder(
-		nil,
-		nil,
-		nil,
-		exportCSV,
-		progress,
-	)
+	// button that exports output box content to csv
+	exportCSV = widget.NewButton("Export to CSV", exportCallback)
 
 	// main content hierarchy
 	content := container.NewBorder(
-		topLayout,
-		bottomLayout,
+		container.NewVBox(
+			title,
+			container.NewBorder(
+				nil,
+				nil,
+				nil,
+				folderSelect,
+				path,
+			),
+			options,
+			run,
+		),
+		container.NewBorder(
+			nil,
+			nil,
+			nil,
+			exportCSV,
+			progress,
+		),
 		nil,
 		nil,
 		outputBox,
