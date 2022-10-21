@@ -1,13 +1,16 @@
-package main
+package background
 
 import (
+	"Bitrate-finder/global"
+	"io/fs"
+	"path/filepath"
 	"strings"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/dialog"
 )
 
-func folderCallback() {
+func FolderCallback() {
 	// create dialog with callback
 	d := dialog.NewFolderOpen(func(lu fyne.ListableURI, err error) {
 		// check if nothing has been selected
@@ -21,14 +24,40 @@ func folderCallback() {
 		formattedText := strings.Join(j[0:len(j)-1], "/")
 
 		// set formatted text in folder field
-		path.SetText(formattedText)
+		global.Path.SetText(formattedText)
 
 		// set progress bar maximum value
 		go func() {
-			progress.Max = float64(getNumFiles(formattedText))
+			global.Progress.Max = float64(getNumFiles(formattedText))
 		}()
-	}, mainWindow)
+	}, global.MainWindow)
 
 	// show folder selection dialog
 	d.Show()
+}
+
+func getNumFiles(path string) int {
+	count := 0
+
+	// walk path and count number of files
+	err := filepath.Walk(path, func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// ignore directories
+		if info.IsDir() {
+			return nil
+		}
+
+		count++
+
+		return nil
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
+	return count
 }

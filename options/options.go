@@ -1,6 +1,7 @@
-package main
+package options
 
 import (
+	"Bitrate-finder/global"
 	"image/color"
 	"strconv"
 
@@ -11,11 +12,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-func optionsCallback() {
-	showOptions(a)
-}
-
-func showOptions(app fyne.App) {
+func ShowOptions(app fyne.App) {
 	// create new window from main app
 	optionsWindow := app.NewWindow("Options")
 
@@ -27,12 +24,12 @@ func showOptions(app fyne.App) {
 
 	// create max bitrate widget and set validator to only allow numbers
 	maxBitrate := widget.NewEntry()
-	maxBitrate.SetText(strconv.Itoa(maxB))
+	maxBitrate.SetText(strconv.Itoa(global.MaxB))
 	maxBitrate.Validator = validation.NewRegexp(`^[0-9]*$`, "Please enter a valid whole number")
 
 	// create min bitrate widget and set validator to only allow numbers
 	minBitrate := widget.NewEntry()
-	minBitrate.SetText(strconv.Itoa(minB))
+	minBitrate.SetText(strconv.Itoa(global.MinB))
 	minBitrate.Validator = validation.NewRegexp(`^[0-9]*$`, "Please enter a valid whole number")
 
 	// create checkbox to exclude bitrates of zero
@@ -47,9 +44,9 @@ func showOptions(app fyne.App) {
 			{Text: "Exclude 0Kb/s", Widget: excludeZero},
 		},
 		OnSubmit: func() {
-			maxB, _ = strconv.Atoi(maxBitrate.Text)
-			minB, _ = strconv.Atoi(minBitrate.Text)
-			ignoreZero = excludeZero.Checked
+			global.MaxB, _ = strconv.Atoi(maxBitrate.Text)
+			global.MinB, _ = strconv.Atoi(minBitrate.Text)
+			global.IgnoreZero = excludeZero.Checked
 
 			optionsWindow.Close()
 		},
@@ -64,7 +61,7 @@ func showOptions(app fyne.App) {
 
 	// run window
 	optionsWindow.SetContent(content)
-	optionsWindow.SetIcon(resourceIconPng)
+	optionsWindow.SetIcon(global.ResourceIconPng)
 	optionsWindow.Resize(fyne.NewSize(400, 200))
 	optionsWindow.SetFixedSize(true)
 	optionsWindow.Show()

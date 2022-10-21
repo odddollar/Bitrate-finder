@@ -1,8 +1,1 @@
-*
-!.gitignore
-!go.mod
-!go.sum
-!*.go
-!icon.go
-!Icon.png
-!README.md
+*.exe

@@ -1,21 +1,23 @@
-package main
+package background
 
 import (
+	"Bitrate-finder/global"
+	"os"
 	"strings"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/dialog"
 )
 
-func exportCallback() {
+func ExportCallback() {
 	// don't do anything if nothing in output box
-	if outputText == "" {
+	if global.OutputText == "" {
 		return
 	}
 
 	go func() {
 		// split string into array and remove first and last indexes
-		outputLines := strings.Split(outputText, "\n")
+		outputLines := strings.Split(global.OutputText, "\n")
 		outputLines = outputLines[1 : len(outputLines)-1]
 
 		// create array of formatted csv values
@@ -35,7 +37,30 @@ func exportCallback() {
 
 			path := uc.URI().Path()
 			writeCSVToFile(path, outCSV)
-		}, mainWindow)
+		}, global.MainWindow)
 		d.Show()
 	}()
+}
+
+func writeCSVToFile(path string, text []string) {
+	// create file and handle error
+	f, err := os.Create(path)
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+
+	// write header to file
+	_, err = f.WriteString("Bitrate (Kb/s),Path\n")
+	if err != nil {
+		panic(err)
+	}
+
+	// write each line to file
+	for _, i := range text {
+		_, err = f.WriteString(i + "\n")
+		if err != nil {
+			panic(err)
+		}
+	}
 }

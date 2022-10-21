@@ -1,6 +1,7 @@
-package main
+package background
 
 import (
+	"Bitrate-finder/global"
 	"fmt"
 	"io/fs"
 	"os/exec"
@@ -10,20 +11,20 @@ import (
 	"syscall"
 )
 
-func runCallback() {
+func RunCallback() {
 	// don't do anything if no path entered
-	if path.Text == "" {
+	if global.Path.Text == "" {
 		return
 	}
 
 	// run as separate thread
 	go func() {
 		// disable button to prevent re-running and exporting until complete
-		run.Disable()
-		exportCSV.Disable()
+		global.Run.Disable()
+		global.ExportCSV.Disable()
 
 		// walk through selected directory
-		err := filepath.Walk(path.Text, func(path string, info fs.FileInfo, err error) error {
+		err := filepath.Walk(global.Path.Text, func(path string, info fs.FileInfo, err error) error {
 			// return errors that occur
 			if err != nil {
 				return err
@@ -43,14 +44,14 @@ func runCallback() {
 			}
 
 			// increase progress bar
-			progress.SetValue(progress.Value + 1)
+			global.Progress.SetValue(global.Progress.Value + 1)
 
 			// convert bitrate found to kilobits per second
 			bitrateKilobitsS, _ := strconv.Atoi(strings.TrimSpace(string(output)))
 			bitrateKilobitsS /= 1000
 
 			// ignore file if bitrate is zero and options set to ignore zero values
-			if bitrateKilobitsS == 0 && ignoreZero {
+			if bitrateKilobitsS == 0 && global.IgnoreZero {
 				return nil
 			}
 
@@ -59,13 +60,13 @@ func runCallback() {
 			// 2. when min is set then only print if greater than min
 			// 3. when max is set then only print if less than max
 			// 4. when both are set then only print if within min and max
-			if (minB == 0 && maxB == 0) ||
-				(maxB == 0 && minB != 0 && bitrateKilobitsS >= minB) ||
-				(minB == 0 && maxB != 0 && bitrateKilobitsS <= maxB) ||
-				(minB != 0 && maxB != 0 && bitrateKilobitsS >= minB && bitrateKilobitsS <= maxB) {
+			if (global.MinB == 0 && global.MaxB == 0) ||
+				(global.MaxB == 0 && global.MinB != 0 && bitrateKilobitsS >= global.MinB) ||
+				(global.MinB == 0 && global.MaxB != 0 && bitrateKilobitsS <= global.MaxB) ||
+				(global.MinB != 0 && global.MaxB != 0 && bitrateKilobitsS >= global.MinB && bitrateKilobitsS <= global.MaxB) {
 				// format output and append new row to top of output box
-				outputText = fmt.Sprintf("%dKb/s %s\n", bitrateKilobitsS, path) + outputText
-				outputBox.SetText(outputText)
+				global.OutputText = fmt.Sprintf("%dKb/s %s\n", bitrateKilobitsS, path) + global.OutputText
+				global.OutputBox.SetText(global.OutputText)
 			}
 
 			return nil
@@ -77,11 +78,11 @@ func runCallback() {
 		}
 
 		// add completion message
-		outputText = "Complete\n" + outputText
-		outputBox.SetText(outputText)
+		global.OutputText = "Complete\n" + global.OutputText
+		global.OutputBox.SetText(global.OutputText)
 
 		// re-enable buttons
-		run.Enable()
-		exportCSV.Enable()
+		global.Run.Enable()
+		global.ExportCSV.Enable()
 	}()
 }
