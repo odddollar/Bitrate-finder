@@ -34,7 +34,7 @@ func ShowOptions(app fyne.App) {
 
 	// create checkbox to exclude bitrates of zero
 	excludeZero := widget.NewCheck("", func(b bool) {})
-	excludeZero.SetChecked(true)
+	excludeZero.SetChecked(global.IgnoreZero)
 
 	// create form layout and set relevant values on submit
 	options := &widget.Form{
