@@ -12,9 +12,13 @@ import (
 )
 
 func RunCallback() {
-	// don't do anything if no path entered
+	// don't do anything if no path entered, otherwise clear output box and progress bar
 	if global.Path.Text == "" {
 		return
+	} else {
+		global.OutputText = ""
+		global.OutputBox.SetText(global.OutputText)
+		global.Progress.SetValue(0)
 	}
 
 	// run as separate thread

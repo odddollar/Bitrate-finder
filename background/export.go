@@ -25,6 +25,12 @@ func ExportCallback() {
 		for i := 0; i < len(outputLines); i++ {
 			t := strings.SplitN(outputLines[i], " ", 2)
 			t[0] = strings.Trim(t[0], "Kb/s")
+
+			// if comma in string then place in quotes
+			if strings.Contains(t[1], ",") {
+				t[1] = "\"" + t[1] + "\""
+			}
+
 			outCSV = append(outCSV, strings.Join(t, ","))
 		}
 
