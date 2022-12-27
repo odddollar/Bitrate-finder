@@ -29,6 +29,7 @@ func FolderCallback() {
 		// set progress bar maximum value
 		go func() {
 			global.Progress.Max = float64(getNumFiles(formattedText))
+			global.ScanningFilesChan <- ""
 		}()
 	}, global.MainWindow)
 

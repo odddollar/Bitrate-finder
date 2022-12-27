@@ -27,6 +27,9 @@ func RunCallback() {
 		global.Run.Disable()
 		global.ExportCSV.Disable()
 
+		// wait for number of files in directory to be obtained
+		<-global.ScanningFilesChan
+
 		// split list of whitelisted file extensions
 		whitelistedExtensionsSplit := strings.Split(global.WhitelistedExtensions, ",")
 
