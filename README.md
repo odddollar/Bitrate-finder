@@ -29,3 +29,5 @@ fyne package
 ## Screenshots
 
 ![Main window](screenshots/main.png)
+
+![Options window](screenshots/options.png)
