@@ -25,7 +25,7 @@ func ShowOptions(app fyne.App) {
 	// create whitelist file extension entry box
 	whitelist := widget.NewEntry()
 	whitelist.SetText(global.WhitelistedExtensions)
-	whitelist.Validator = validation.NewRegexp(`^[0-9a-zA-Z]+(,[0-9a-zA-Z]+)*$`, "Please only enter letters, numbers and commas")
+	whitelist.Validator = validation.NewRegexp(`^(([0-9a-zA-Z]+(,[0-9a-zA-Z]+)*)|)?$`, "Please only enter letters, numbers and commas")
 
 	// create max bitrate widget and set validator to only allow numbers
 	maxBitrate := widget.NewEntry()

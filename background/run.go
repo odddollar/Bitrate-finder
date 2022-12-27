@@ -47,7 +47,7 @@ func RunCallback() {
 
 			// if current path's extension isn't in the whitelist then ignore
 			ext := strings.TrimPrefix(filepath.Ext(path), ".")
-			if !in(whitelistedExtensionsSplit, ext) {
+			if !in(whitelistedExtensionsSplit, ext) && whitelistedExtensionsSplit[0] != "" {
 				return nil
 			}
 
