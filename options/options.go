@@ -22,6 +22,11 @@ func ShowOptions(app fyne.App) {
 	title.TextStyle.Bold = true
 	title.TextSize = 20
 
+	// create whitelist file extension entry box
+	whitelist := widget.NewEntry()
+	whitelist.SetText(global.WhitelistedExtensions)
+	whitelist.Validator = validation.NewRegexp(`^[0-9a-zA-Z]+(,[0-9a-zA-Z]+)*$`, "Please only enter letters, numbers and commas")
+
 	// create max bitrate widget and set validator to only allow numbers
 	maxBitrate := widget.NewEntry()
 	maxBitrate.SetText(strconv.Itoa(global.MaxB))
@@ -39,11 +44,13 @@ func ShowOptions(app fyne.App) {
 	// create form layout and set relevant values on submit
 	options := &widget.Form{
 		Items: []*widget.FormItem{
+			{Text: "Whitelisted extensions (comma-separated)", Widget: whitelist},
 			{Text: "Max bitrate (Kb/s)", Widget: maxBitrate},
 			{Text: "Min bitrate (Kb/s)", Widget: minBitrate},
 			{Text: "Exclude 0Kb/s", Widget: excludeZero},
 		},
 		OnSubmit: func() {
+			global.WhitelistedExtensions = whitelist.Text
 			global.MaxB, _ = strconv.Atoi(maxBitrate.Text)
 			global.MinB, _ = strconv.Atoi(minBitrate.Text)
 			global.IgnoreZero = excludeZero.Checked
@@ -55,14 +62,15 @@ func ShowOptions(app fyne.App) {
 	// create main layout with additional information label
 	content := container.NewVBox(
 		title,
-		widget.NewLabelWithStyle("Enter 0 to remove limit", fyne.TextAlignLeading, fyne.TextStyle{Bold: true}),
+		widget.NewLabelWithStyle("Leave whitelist field blank to disabled filtering", fyne.TextAlignCenter, fyne.TextStyle{Bold: true}),
+		widget.NewLabelWithStyle("Enter 0 in min/max fields to remove limits", fyne.TextAlignCenter, fyne.TextStyle{Bold: true}),
 		options,
 	)
 
 	// run window
 	optionsWindow.SetContent(content)
 	optionsWindow.SetIcon(global.ResourceIconPng)
-	optionsWindow.Resize(fyne.NewSize(400, 200))
+	optionsWindow.Resize(fyne.NewSize(800, 380))
 	optionsWindow.SetFixedSize(true)
 	optionsWindow.Show()
 }

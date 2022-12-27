@@ -8,6 +8,7 @@ import (
 
 // set global variables for maintaining state
 var OutputText string
+var WhitelistedExtensions string = "mp4,mov,avi,flv,wmv,m4v,webm,mkv,vob"
 var MaxB int = 0
 var MinB int = 0
 var IgnoreZero bool = true
