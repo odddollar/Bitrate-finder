@@ -13,6 +13,7 @@ Prebuilt Windows binaries are available from the GitHub page.
 - Ability to exclude files with a bitrate of 0Kb/s (``ffprobe`` returns 0Kb/s for non-video/audio files)
 - Progress tracking to view completion percentage
 - Ability to export results to a CSV file
+- Ability to whitelist files by extension in output
 
 ## Building
 
