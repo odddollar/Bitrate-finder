@@ -27,6 +27,9 @@ func RunCallback() {
 		global.Run.Disable()
 		global.ExportCSV.Disable()
 
+		// split list of whitelisted file extensions
+		whitelistedExtensionsSplit := strings.Split(global.WhitelistedExtensions, ",")
+
 		// walk through selected directory
 		err := filepath.Walk(global.Path.Text, func(path string, info fs.FileInfo, err error) error {
 			// return errors that occur
@@ -41,6 +44,12 @@ func RunCallback() {
 
 			// increase progress bar
 			global.Progress.SetValue(global.Progress.Value + 1)
+
+			// if current path's extension isn't in the whitelist then ignore
+			ext := strings.TrimPrefix(filepath.Ext(path), ".")
+			if !in(whitelistedExtensionsSplit, ext) {
+				return nil
+			}
 
 			// get bitrate in kilobits/s
 			bitrateKilobitsS := getBitrate(path)
@@ -99,4 +108,14 @@ func getBitrate(path string) int {
 	bitrate /= 1000
 
 	return bitrate
+}
+
+// check if array of strings contains string
+func in(list []string, item string) bool {
+	for i := 0; i < len(list); i++ {
+		if list[i] == item {
+			return true
+		}
+	}
+	return false
 }
