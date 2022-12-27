@@ -43,10 +43,7 @@ func RunCallback() {
 			global.Progress.SetValue(global.Progress.Value + 1)
 
 			// get bitrate in kilobits/s
-			bitrateKilobitsS, err := getBitrate(path)
-			if err != nil {
-				return err
-			}
+			bitrateKilobitsS := getBitrate(path)
 
 			// ignore file if bitrate is zero and options set to ignore zero values
 			if bitrateKilobitsS == 0 && global.IgnoreZero {
@@ -85,18 +82,21 @@ func RunCallback() {
 	}()
 }
 
-func getBitrate(path string) (int, error) {
+func getBitrate(path string) int {
 	// execute command (without cmd window) to find bitrate and handle error
 	command := exec.Command("cmd", "/c", "ffprobe", "-v", "error", "-show_entries", "format=bit_rate", "-of", "default=noprint_wrappers=1:nokey=1", path)
 	command.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	output, err := command.Output()
+
+	// if error occurred, then ffprobe was unable to get the bitrate,
+	// so should return 0 and allow it to be removed from output with "Exclude 0Kb/s"
 	if err != nil {
-		return 0, err
+		return 0
 	}
 
 	// convert bitrate to kilobits per second
 	bitrate, _ := strconv.Atoi(strings.TrimSpace(string(output)))
 	bitrate /= 1000
 
-	return bitrate, nil
+	return bitrate
 }
