@@ -27,8 +27,8 @@ func RunCallback() {
 		global.Run.Disable()
 		global.ExportCSV.Disable()
 
-		// wait for number of files in directory to be obtained
-		<-global.ScanningFilesChan
+		// set progress bar maximum value
+		global.Progress.Max = float64(getNumFiles(global.Path.Text))
 
 		// split list of whitelisted file extensions
 		whitelistedExtensionsSplit := strings.Split(global.WhitelistedExtensions, ",")
@@ -111,6 +111,32 @@ func getBitrate(path string) int {
 	bitrate /= 1000
 
 	return bitrate
+}
+
+func getNumFiles(path string) int {
+	count := 0
+
+	// walk path and count number of files
+	err := filepath.Walk(path, func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// ignore directories
+		if info.IsDir() {
+			return nil
+		}
+
+		count++
+
+		return nil
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
+	return count
 }
 
 // check if array of strings contains string

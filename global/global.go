@@ -24,6 +24,3 @@ var Run *widget.Button
 var OutputBox *widget.Entry
 var Progress *widget.ProgressBar
 var ExportCSV *widget.Button
-
-// channel to pause running until number of files in directory has been obtained
-var ScanningFilesChan chan string

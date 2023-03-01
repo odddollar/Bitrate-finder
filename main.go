@@ -15,9 +15,6 @@ import (
 
 // initialise main ui widgets
 func init() {
-	// initialise synchronisation channel
-	global.ScanningFilesChan = make(chan string)
-
 	// create app
 	global.A = app.New()
 	global.MainWindow = global.A.NewWindow("Bitrate Finder")
