@@ -62,7 +62,7 @@ func ShowOptions(app fyne.App) {
 	// create main layout with additional information label
 	content := container.NewVBox(
 		title,
-		widget.NewLabelWithStyle("Leave whitelist field blank to disabled filtering", fyne.TextAlignCenter, fyne.TextStyle{Bold: true}),
+		widget.NewLabelWithStyle("Leave whitelist field blank to disable filtering", fyne.TextAlignCenter, fyne.TextStyle{Bold: true}),
 		widget.NewLabelWithStyle("Enter 0 in min/max fields to remove limits", fyne.TextAlignCenter, fyne.TextStyle{Bold: true}),
 		options,
 	)
