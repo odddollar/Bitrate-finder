@@ -2,7 +2,6 @@ package options
 
 import (
 	"Bitrate-finder/global"
-
 	"strconv"
 
 	"fyne.io/fyne/v2"
@@ -13,55 +12,46 @@ import (
 )
 
 func OptionsCallback() {
-	// create layout
-	optionsDialog := createOptions()
+	// declare dialog so submit and cancel functions can use
+	var d *dialog.CustomDialog
 
-	// create dialog using custom layout
-	d := dialog.NewCustomConfirm(
-		"Options",
-		"Ok",
-		"Cancel",
-		optionsDialog,
-		// save new settings to globals
-		func(b bool) {
-			global.WhitelistedExtensions = global.Whitelist.Text
-			global.MaxB, _ = strconv.Atoi(global.MaxBitrate.Text)
-			global.MinB, _ = strconv.Atoi(global.MinBitrate.Text)
-			global.IgnoreZero = global.ExcludeZero.Checked
-		},
-		global.MainWindow,
-	)
-	d.Resize(fyne.NewSize(590, 420))
-	d.Show()
-}
-
-func createOptions() *fyne.Container {
 	// create whitelist file extension entry box
-	global.Whitelist = widget.NewEntry()
-	global.Whitelist.SetText(global.WhitelistedExtensions)
-	global.Whitelist.Validator = validation.NewRegexp(`^(([0-9a-zA-Z]+(,[0-9a-zA-Z]+)*)|)?$`, "Please only enter letters, numbers and commas")
+	whitelist := widget.NewEntry()
+	whitelist.SetText(global.WhitelistedExtensions)
+	whitelist.Validator = validation.NewRegexp(`^(([0-9a-zA-Z]+(,[0-9a-zA-Z]+)*)|)?$`, "Please only enter letters, numbers and commas")
 
 	// create max bitrate widget and set validator to only allow numbers
-	global.MaxBitrate = widget.NewEntry()
-	global.MaxBitrate.SetText(strconv.Itoa(global.MaxB))
-	global.MaxBitrate.Validator = validation.NewRegexp(`^[0-9]*$`, "Please enter a valid whole number")
+	maxBitrate := widget.NewEntry()
+	maxBitrate.SetText(strconv.Itoa(global.MaxB))
+	maxBitrate.Validator = validation.NewRegexp(`^[0-9]*$`, "Please enter a valid whole number")
 
 	// create min bitrate widget and set validator to only allow numbers
-	global.MinBitrate = widget.NewEntry()
-	global.MinBitrate.SetText(strconv.Itoa(global.MinB))
-	global.MinBitrate.Validator = validation.NewRegexp(`^[0-9]*$`, "Please enter a valid whole number")
+	minBitrate := widget.NewEntry()
+	minBitrate.SetText(strconv.Itoa(global.MinB))
+	minBitrate.Validator = validation.NewRegexp(`^[0-9]*$`, "Please enter a valid whole number")
 
 	// create checkbox to exclude bitrates of zero
-	global.ExcludeZero = widget.NewCheck("", func(b bool) {})
-	global.ExcludeZero.SetChecked(global.IgnoreZero)
+	excludeZero := widget.NewCheck("", func(b bool) {})
+	excludeZero.SetChecked(global.IgnoreZero)
 
 	// create form layout and set relevant values on submit
 	options := &widget.Form{
 		Items: []*widget.FormItem{
-			{Text: "Whitelisted extensions", Widget: global.Whitelist},
-			{Text: "Max bitrate (Kb/s)", Widget: global.MaxBitrate},
-			{Text: "Min bitrate (Kb/s)", Widget: global.MinBitrate},
-			{Text: "Exclude 0Kb/s", Widget: global.ExcludeZero},
+			{Text: "Whitelisted extensions", Widget: whitelist},
+			{Text: "Max bitrate (Kb/s)", Widget: maxBitrate},
+			{Text: "Min bitrate (Kb/s)", Widget: minBitrate},
+			{Text: "Exclude 0Kb/s", Widget: excludeZero},
+		},
+		OnSubmit: func() {
+			global.WhitelistedExtensions = whitelist.Text
+			global.MaxB, _ = strconv.Atoi(maxBitrate.Text)
+			global.MinB, _ = strconv.Atoi(minBitrate.Text)
+			global.IgnoreZero = excludeZero.Checked
+
+			d.Hide()
+		},
+		OnCancel: func() {
+			d.Hide()
 		},
 	}
 
@@ -72,5 +62,12 @@ func createOptions() *fyne.Container {
 		options,
 	)
 
-	return content
+	// create dialog using custom layout
+	d = dialog.NewCustomWithoutButtons(
+		"Options",
+		content,
+		global.MainWindow,
+	)
+	d.Resize(fyne.NewSize(590, 420))
+	d.Show()
 }
