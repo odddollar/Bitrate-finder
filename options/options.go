@@ -2,25 +2,23 @@ package options
 
 import (
 	"Bitrate-finder/global"
-	"image/color"
 	"strconv"
 
 	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/validation"
 	"fyne.io/fyne/v2/widget"
 )
 
-func ShowOptions(app fyne.App) {
-	// create new window from main app
-	optionsWindow := app.NewWindow("Options")
+func ShowOptions() *fyne.Container {
+	// // create new window from main app
+	// optionsWindow := app.NewWindow("Options")
 
-	// create title and set styling
-	title := canvas.NewText("Options", color.Black)
-	title.Alignment = fyne.TextAlignCenter
-	title.TextStyle.Bold = true
-	title.TextSize = 20
+	// // create title and set styling
+	// title := canvas.NewText("Options", color.Black)
+	// title.Alignment = fyne.TextAlignCenter
+	// title.TextStyle.Bold = true
+	// title.TextSize = 20
 
 	// create whitelist file extension entry box
 	whitelist := widget.NewEntry()
@@ -49,28 +47,30 @@ func ShowOptions(app fyne.App) {
 			{Text: "Min bitrate (Kb/s)", Widget: minBitrate},
 			{Text: "Exclude 0Kb/s", Widget: excludeZero},
 		},
-		OnSubmit: func() {
-			global.WhitelistedExtensions = whitelist.Text
-			global.MaxB, _ = strconv.Atoi(maxBitrate.Text)
-			global.MinB, _ = strconv.Atoi(minBitrate.Text)
-			global.IgnoreZero = excludeZero.Checked
+		// OnSubmit: func() {
+		// 	global.WhitelistedExtensions = whitelist.Text
+		// 	global.MaxB, _ = strconv.Atoi(maxBitrate.Text)
+		// 	global.MinB, _ = strconv.Atoi(minBitrate.Text)
+		// 	global.IgnoreZero = excludeZero.Checked
 
-			optionsWindow.Close()
-		},
+		// 	optionsWindow.Close()
+		// },
 	}
 
 	// create main layout with additional information label
 	content := container.NewVBox(
-		title,
-		widget.NewLabelWithStyle("Leave whitelist field blank to disable filtering", fyne.TextAlignCenter, fyne.TextStyle{Bold: true}),
-		widget.NewLabelWithStyle("Enter 0 in min/max fields to remove limits", fyne.TextAlignCenter, fyne.TextStyle{Bold: true}),
+		//title,
+		widget.NewLabel("Leave whitelist field blank to disable filtering"),
+		widget.NewLabel("Enter 0 in min/max fields to remove limits"),
 		options,
 	)
 
+	return content
+
 	// run window
-	optionsWindow.SetContent(content)
-	optionsWindow.SetIcon(global.ResourceIconPng)
-	optionsWindow.Resize(fyne.NewSize(800, 380))
-	optionsWindow.SetFixedSize(true)
-	optionsWindow.Show()
+	// optionsWindow.SetContent(content)
+	// optionsWindow.SetIcon(global.ResourceIconPng)
+	// optionsWindow.Resize(fyne.NewSize(800, 380))
+	// optionsWindow.SetFixedSize(true)
+	// optionsWindow.Show()
 }

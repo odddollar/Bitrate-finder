@@ -10,6 +10,7 @@ import (
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -33,7 +34,11 @@ func init() {
 	global.FolderSelect = widget.NewButton("...", background.FolderCallback)
 
 	// create options button to open options window
-	global.Opt = widget.NewButton("Options", func() { options.ShowOptions(global.A) })
+	global.Opt = widget.NewButton("Options", func() {
+		// options.ShowOptions(global.A)
+		d := dialog.NewCustomConfirm("Options", "Ok", "Cancel", options.ShowOptions(), func(b bool) {}, global.MainWindow)
+		d.Show()
+	})
 
 	// create run button widget
 	global.Run = widget.NewButton("Run", background.RunCallback)
