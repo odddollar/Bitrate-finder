@@ -36,12 +36,14 @@ func ExportCallback() {
 
 		// open save window
 		d := dialog.NewFileSave(func(uc fyne.URIWriteCloser, err error) {
+			// TODO: properly handle saving errors
 			// prevent crashing if nothing was selected
 			if uc == nil {
 				return
 			}
 			defer uc.Close()
 
+			// TODO: change this to use uc as default writer
 			path := uc.URI().Path()
 			writeCSVToFile(path, outCSV)
 		}, global.MainWindow)

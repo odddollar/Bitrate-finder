@@ -11,6 +11,7 @@ import (
 func FolderCallback() {
 	// create dialog with callback
 	d := dialog.NewFolderOpen(func(lu fyne.ListableURI, err error) {
+		// TODO: properly handle opening errors
 		// check if nothing has been selected
 		if lu == nil {
 			return
