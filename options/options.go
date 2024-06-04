@@ -11,15 +11,6 @@ import (
 )
 
 func ShowOptions() *fyne.Container {
-	// // create new window from main app
-	// optionsWindow := app.NewWindow("Options")
-
-	// // create title and set styling
-	// title := canvas.NewText("Options", color.Black)
-	// title.Alignment = fyne.TextAlignCenter
-	// title.TextStyle.Bold = true
-	// title.TextSize = 20
-
 	// create whitelist file extension entry box
 	whitelist := widget.NewEntry()
 	whitelist.SetText(global.WhitelistedExtensions)
@@ -42,35 +33,32 @@ func ShowOptions() *fyne.Container {
 	// create form layout and set relevant values on submit
 	options := &widget.Form{
 		Items: []*widget.FormItem{
-			{Text: "Whitelisted extensions (comma-separated)", Widget: whitelist},
+			{Text: "Whitelisted extensions", Widget: whitelist},
 			{Text: "Max bitrate (Kb/s)", Widget: maxBitrate},
 			{Text: "Min bitrate (Kb/s)", Widget: minBitrate},
 			{Text: "Exclude 0Kb/s", Widget: excludeZero},
 		},
-		// OnSubmit: func() {
-		// 	global.WhitelistedExtensions = whitelist.Text
-		// 	global.MaxB, _ = strconv.Atoi(maxBitrate.Text)
-		// 	global.MinB, _ = strconv.Atoi(minBitrate.Text)
-		// 	global.IgnoreZero = excludeZero.Checked
+		// 	OnSubmit: func() {
+		// 		global.WhitelistedExtensions = whitelist.Text
+		// 		global.MaxB, _ = strconv.Atoi(maxBitrate.Text)
+		// 		global.MinB, _ = strconv.Atoi(minBitrate.Text)
+		// 		global.IgnoreZero = excludeZero.Checked
 
-		// 	optionsWindow.Close()
-		// },
+		// 		optionsWindow.Close()
+		// 	},
 	}
 
 	// create main layout with additional information label
 	content := container.NewVBox(
-		//title,
-		widget.NewLabel("Leave whitelist field blank to disable filtering"),
-		widget.NewLabel("Enter 0 in min/max fields to remove limits"),
+		widget.NewLabelWithStyle(
+			// really hacky way of padding window so entry boxes are big enough
+			"Leave whitelist field blank to disable filtering                                                ",
+			fyne.TextAlignLeading,
+			fyne.TextStyle{Bold: true},
+		),
+		widget.NewLabelWithStyle("Enter 0 in min/max fields to remove limits", fyne.TextAlignLeading, fyne.TextStyle{Bold: true}),
 		options,
 	)
 
 	return content
-
-	// run window
-	// optionsWindow.SetContent(content)
-	// optionsWindow.SetIcon(global.ResourceIconPng)
-	// optionsWindow.Resize(fyne.NewSize(800, 380))
-	// optionsWindow.SetFixedSize(true)
-	// optionsWindow.Show()
 }
