@@ -47,6 +47,7 @@ func ExportCallback() {
 			path := uc.URI().Path()
 			writeCSVToFile(path, outCSV)
 		}, global.MainWindow)
+		d.SetFileName("output.csv")
 		d.Show()
 	}()
 }
