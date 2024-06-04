@@ -2,6 +2,7 @@ package options
 
 import (
 	"Bitrate-finder/global"
+
 	"strconv"
 
 	"fyne.io/fyne/v2"
@@ -30,6 +31,7 @@ func OptionsCallback() {
 		},
 		global.MainWindow,
 	)
+	d.Resize(fyne.NewSize(590, 420))
 	d.Show()
 }
 
@@ -65,12 +67,7 @@ func createOptions() *fyne.Container {
 
 	// create main layout with additional information label
 	content := container.NewVBox(
-		widget.NewLabelWithStyle(
-			// really hacky way of padding window so entry boxes are big enough
-			"Leave whitelist field blank to disable filtering                                                ",
-			fyne.TextAlignLeading,
-			fyne.TextStyle{Bold: true},
-		),
+		widget.NewLabelWithStyle("Leave whitelist field blank to disable filtering", fyne.TextAlignLeading, fyne.TextStyle{Bold: true}),
 		widget.NewLabelWithStyle("Enter 0 in min/max fields to remove limits", fyne.TextAlignLeading, fyne.TextStyle{Bold: true}),
 		options,
 	)
