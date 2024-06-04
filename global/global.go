@@ -7,6 +7,7 @@ import (
 )
 
 // set global variables for maintaining state
+// TODO: change this to use data binding
 var OutputText string
 var WhitelistedExtensions string = "mp4,mov,avi,flv,wmv,m4v,webm,mkv,vob"
 var MaxB int = 0
