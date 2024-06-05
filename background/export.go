@@ -2,7 +2,6 @@ package background
 
 import (
 	"Bitrate-finder/global"
-	"os"
 	"strings"
 
 	"fyne.io/fyne/v2"
@@ -36,41 +35,32 @@ func ExportCallback() {
 
 		// open save window
 		d := dialog.NewFileSave(func(uc fyne.URIWriteCloser, err error) {
-			// TODO: properly handle saving errors
+			// show error dialog then close app
+			if err != nil {
+				global.ErrorDialog(err)
+			}
+
 			// prevent crashing if nothing was selected
 			if uc == nil {
 				return
 			}
 			defer uc.Close()
 
-			// TODO: change this to use uc as default writer
-			path := uc.URI().Path()
-			writeCSVToFile(path, outCSV)
+			// write header to file
+			_, err = uc.Write([]byte("Bitrate (Kb/s),Path\n"))
+			if err != nil {
+				global.ErrorDialog(err)
+			}
+
+			// write each line to file
+			for _, i := range outCSV {
+				_, err = uc.Write([]byte(i + "\n"))
+				if err != nil {
+					global.ErrorDialog(err)
+				}
+			}
 		}, global.MainWindow)
 		d.SetFileName("output.csv")
 		d.Show()
 	}()
-}
-
-func writeCSVToFile(path string, text []string) {
-	// create file and handle error
-	f, err := os.Create(path)
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-
-	// write header to file
-	_, err = f.WriteString("Bitrate (Kb/s),Path\n")
-	if err != nil {
-		panic(err)
-	}
-
-	// write each line to file
-	for _, i := range text {
-		_, err = f.WriteString(i + "\n")
-		if err != nil {
-			panic(err)
-		}
-	}
 }

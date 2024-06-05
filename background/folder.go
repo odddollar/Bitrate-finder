@@ -2,7 +2,7 @@ package background
 
 import (
 	"Bitrate-finder/global"
-	"strings"
+	"path/filepath"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/dialog"
@@ -11,7 +11,11 @@ import (
 func FolderCallback() {
 	// create dialog with callback
 	d := dialog.NewFolderOpen(func(lu fyne.ListableURI, err error) {
-		// TODO: properly handle opening errors
+		// show error dialog then close app
+		if err != nil {
+			global.ErrorDialog(err)
+		}
+
 		// check if nothing has been selected
 		if lu == nil {
 			return
@@ -19,8 +23,7 @@ func FolderCallback() {
 
 		// get selected items in directory and remove filename from first item
 		URIList, _ := lu.List()
-		j := strings.Split(URIList[0].Path(), "/")
-		formattedText := strings.Join(j[0:len(j)-1], "/")
+		formattedText := filepath.Dir(URIList[0].Path())
 
 		// set formatted text in folder field
 		global.Path.SetText(formattedText)

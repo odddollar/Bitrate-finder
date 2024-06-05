@@ -6,6 +6,7 @@ import (
 	"io/fs"
 	"os/exec"
 	"path/filepath"
+	"slices"
 	"strconv"
 	"strings"
 	"syscall"
@@ -50,7 +51,7 @@ func RunCallback() {
 
 			// if current path's extension isn't in the whitelist then ignore
 			ext := strings.TrimPrefix(filepath.Ext(path), ".")
-			if !in(whitelistedExtensionsSplit, ext) && whitelistedExtensionsSplit[0] != "" {
+			if !slices.Contains(whitelistedExtensionsSplit, ext) && whitelistedExtensionsSplit[0] != "" {
 				return nil
 			}
 
@@ -81,7 +82,7 @@ func RunCallback() {
 
 		// handle error if unable to walk directory
 		if err != nil {
-			panic(err)
+			global.ErrorDialog(err)
 		}
 
 		// add completion message
@@ -134,18 +135,8 @@ func getNumFiles(path string) int {
 	})
 
 	if err != nil {
-		panic(err)
+		global.ErrorDialog(err)
 	}
 
 	return count
-}
-
-// check if array of strings contains string
-func in(list []string, item string) bool {
-	for i := 0; i < len(list); i++ {
-		if list[i] == item {
-			return true
-		}
-	}
-	return false
 }
