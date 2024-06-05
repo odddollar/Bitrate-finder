@@ -96,9 +96,8 @@ func RunCallback() {
 }
 
 func getBitrate(path string) int {
-	// TODO: change function/command to get bitrate specifically from first video stream
 	// execute command (without cmd window) to find bitrate and handle error
-	command := exec.Command("cmd", "/c", "ffprobe", "-v", "error", "-show_entries", "format=bit_rate", "-of", "default=noprint_wrappers=1:nokey=1", path)
+	command := exec.Command("ffprobe", "-v", "error", "-show_entries", "format=bit_rate", "-of", "default=noprint_wrappers=1:nokey=1", path)
 	command.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	output, err := command.Output()
 
