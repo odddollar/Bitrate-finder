@@ -17,8 +17,7 @@ func RunCallback() {
 	if global.Path.Text == "" {
 		return
 	} else {
-		global.OutputText = ""
-		global.OutputBox.SetText(global.OutputText)
+		global.OutputText.Set("")
 		global.Progress.SetValue(0)
 	}
 
@@ -75,8 +74,8 @@ func RunCallback() {
 				(global.MinB == 0 && global.MaxB != 0 && bitrateKilobitsS <= global.MaxB) ||
 				(global.MinB != 0 && global.MaxB != 0 && bitrateKilobitsS >= global.MinB && bitrateKilobitsS <= global.MaxB) {
 				// format output and append new row to top of output box
-				global.OutputText = fmt.Sprintf("%dKb/s %s\n", bitrateKilobitsS, path) + global.OutputText
-				global.OutputBox.SetText(global.OutputText)
+				t, _ := global.OutputText.Get()
+				global.OutputText.Set(fmt.Sprintf("%dKb/s %s\n", bitrateKilobitsS, path) + t)
 			}
 
 			return nil
@@ -88,8 +87,8 @@ func RunCallback() {
 		}
 
 		// add completion message
-		global.OutputText = "Complete\n" + global.OutputText
-		global.OutputBox.SetText(global.OutputText)
+		t, _ := global.OutputText.Get()
+		global.OutputText.Set("Complete\n" + t)
 
 		// re-enable buttons
 		global.FolderSelect.Enable()

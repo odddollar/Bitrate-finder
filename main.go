@@ -10,11 +10,15 @@ import (
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/widget"
 )
 
 // initialise main ui widgets
 func init() {
+	// initialise output box data binding
+	global.OutputText = binding.NewString()
+
 	// create app
 	global.A = app.New()
 	global.MainWindow = global.A.NewWindow("Bitrate Finder")
@@ -40,7 +44,8 @@ func init() {
 	global.Run.Importance = widget.HighImportance
 
 	// create output box with minimum number of rows visible
-	global.OutputBox = widget.NewMultiLineEntry()
+	global.OutputBox = widget.NewEntryWithData(global.OutputText)
+	global.OutputBox.MultiLine = true
 
 	// create progress bar
 	global.Progress = widget.NewProgressBar()

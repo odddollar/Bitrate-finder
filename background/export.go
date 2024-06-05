@@ -10,13 +10,14 @@ import (
 
 func ExportCallback() {
 	// don't do anything if nothing in output box
-	if global.OutputText == "" {
+	if t, _ := global.OutputText.Get(); t == "" {
 		return
 	}
 
 	go func() {
 		// split string into array and remove first and last indexes
-		outputLines := strings.Split(global.OutputText, "\n")
+		t, _ := global.OutputText.Get()
+		outputLines := strings.Split(t, "\n")
 		outputLines = outputLines[1 : len(outputLines)-1]
 
 		// create array of formatted csv values

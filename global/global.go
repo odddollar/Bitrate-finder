@@ -3,12 +3,12 @@ package global
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
+	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/widget"
 )
 
 // set global variables for maintaining state
-// TODO: change this to use data binding
-var OutputText string
+var OutputText binding.String
 var WhitelistedExtensions string = "mp4,mov,avi,flv,wmv,m4v,webm,mkv,vob"
 var MaxB int = 0
 var MinB int = 0
