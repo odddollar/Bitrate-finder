@@ -9,14 +9,16 @@ import (
 )
 
 func ExportCallback() {
+	// get output box text
+	t, _ := global.OutputText.Get()
+
 	// don't do anything if nothing in output box
-	if t, _ := global.OutputText.Get(); t == "" {
+	if t == "" {
 		return
 	}
 
 	go func() {
 		// split string into array and remove first and last indexes
-		t, _ := global.OutputText.Get()
 		outputLines := strings.Split(t, "\n")
 		outputLines = outputLines[1 : len(outputLines)-1]
 
