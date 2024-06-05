@@ -61,6 +61,9 @@ func ExportCallback() {
 				global.ErrorDialog(err)
 			}
 		}
+
+		// successful export
+		dialog.ShowInformation("Success", "Export successful", global.MainWindow)
 	}, global.MainWindow)
 	d.SetFileName("output.csv")
 	d.Show()
