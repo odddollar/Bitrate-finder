@@ -78,7 +78,6 @@ func init() {
 	// set main window properties
 	global.MainWindow.SetContent(content)
 	global.MainWindow.SetMaster()
-	global.MainWindow.SetIcon(global.ResourceIconPng)
 	global.MainWindow.Resize(fyne.NewSize(960, 610))
 }
 
