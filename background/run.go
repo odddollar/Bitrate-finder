@@ -24,7 +24,9 @@ func RunCallback() {
 
 	// run as separate thread
 	go func() {
-		// disable button to prevent re-running and exporting until complete
+		// disable all buttons when running
+		global.FolderSelect.Disable()
+		global.Opt.Disable()
 		global.Run.Disable()
 		global.ExportCSV.Disable()
 
@@ -90,6 +92,8 @@ func RunCallback() {
 		global.OutputBox.SetText(global.OutputText)
 
 		// re-enable buttons
+		global.FolderSelect.Enable()
+		global.Opt.Enable()
 		global.Run.Enable()
 		global.ExportCSV.Enable()
 	}()
