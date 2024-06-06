@@ -10,7 +10,7 @@ import (
 
 func FolderCallback() {
 	// create dialog with callback
-	d := dialog.NewFolderOpen(func(lu fyne.ListableURI, err error) {
+	dialog.ShowFolderOpen(func(lu fyne.ListableURI, err error) {
 		// show error dialog then close app
 		if err != nil {
 			global.ErrorDialog(err)
@@ -28,7 +28,4 @@ func FolderCallback() {
 		// set formatted text in folder field
 		global.Path.SetText(formattedText)
 	}, global.MainWindow)
-
-	// show folder selection dialog
-	d.Show()
 }

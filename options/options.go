@@ -5,7 +5,6 @@ import (
 	"strconv"
 
 	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/validation"
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
@@ -13,7 +12,7 @@ import (
 
 func OptionsCallback() {
 	// declare dialog so submit and cancel functions can use
-	var d *dialog.CustomDialog
+	var d *dialog.FormDialog
 
 	// create whitelist file extension entry box
 	whitelist := widget.NewEntry()
@@ -35,39 +34,30 @@ func OptionsCallback() {
 	excludeZero.SetChecked(global.IgnoreZero)
 
 	// create form layout and set relevant values on submit
-	options := &widget.Form{
-		Items: []*widget.FormItem{
-			{Text: "Whitelisted extensions", Widget: whitelist},
-			{Text: "Max bitrate (Kb/s)", Widget: maxBitrate},
-			{Text: "Min bitrate (Kb/s)", Widget: minBitrate},
-			{Text: "Exclude 0Kb/s", Widget: excludeZero},
-		},
-		OnSubmit: func() {
-			global.WhitelistedExtensions = whitelist.Text
-			global.MaxB, _ = strconv.Atoi(maxBitrate.Text)
-			global.MinB, _ = strconv.Atoi(minBitrate.Text)
-			global.IgnoreZero = excludeZero.Checked
-
-			d.Hide()
-		},
-		OnCancel: func() {
-			d.Hide()
-		},
+	options := []*widget.FormItem{
+		{Text: "Whitelisted extensions", Widget: whitelist, HintText: "Leave blank to disable filtering"},
+		{Text: "Max bitrate (Kb/s)", Widget: maxBitrate, HintText: "Enter 0 to remove limit"},
+		{Text: "Min bitrate (Kb/s)", Widget: minBitrate, HintText: "Enter 0 to remove limit"},
+		{Text: "Exclude 0Kb/s", Widget: excludeZero},
 	}
 
-	// create main layout with additional information label
-	content := container.NewVBox(
-		widget.NewLabelWithStyle("Leave whitelist field blank to disable filtering", fyne.TextAlignLeading, fyne.TextStyle{Bold: true}),
-		widget.NewLabelWithStyle("Enter 0 in min/max fields to remove limits", fyne.TextAlignLeading, fyne.TextStyle{Bold: true}),
-		options,
-	)
-
-	// create dialog using custom layout
-	d = dialog.NewCustomWithoutButtons(
+	// create dialog using form items
+	d = dialog.NewForm(
 		"Options",
-		content,
+		"Save",
+		"Cancel",
+		options,
+		func(b bool) {
+			// only update global options if save selected
+			if b {
+				global.WhitelistedExtensions = whitelist.Text
+				global.MaxB, _ = strconv.Atoi(maxBitrate.Text)
+				global.MinB, _ = strconv.Atoi(minBitrate.Text)
+				global.IgnoreZero = excludeZero.Checked
+			}
+		},
 		global.MainWindow,
 	)
-	d.Resize(fyne.NewSize(590, 420))
+	d.Resize(fyne.NewSize(590, 335))
 	d.Show()
 }
