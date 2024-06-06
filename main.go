@@ -14,6 +14,8 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
+// TODO: add check for ffprobe availability
+
 // initialise main ui widgets
 func init() {
 	// initialise output box data binding
