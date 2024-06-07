@@ -14,11 +14,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-// initialise main ui widgets
-func init() {
-	// initialise output box data binding
-	global.OutputText = binding.NewString()
-
+func main() {
 	// create app
 	global.A = app.New()
 	global.MainWindow = global.A.NewWindow("Bitrate Finder")
@@ -44,6 +40,7 @@ func init() {
 	global.Run.Importance = widget.HighImportance
 
 	// create output box with minimum number of rows visible
+	global.OutputText = binding.NewString()
 	global.OutputBox = widget.NewEntryWithData(global.OutputText)
 	global.OutputBox.MultiLine = true
 
@@ -82,11 +79,8 @@ func init() {
 
 	// set main window properties
 	global.MainWindow.SetContent(content)
-	global.MainWindow.SetMaster()
 	global.MainWindow.Resize(fyne.NewSize(960, 610))
-}
 
-func main() {
 	// ensure app has access to ffprobe
 	if err := background.CheckFfprobe(); err != nil {
 		global.ErrorDialog(err, true)
