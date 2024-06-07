@@ -6,17 +6,12 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-// TODO: potentially make some errors non-fatal
-
-func ErrorDialog(err error, fatal bool) {
+func ErrorDialog(err error) {
 	// create dialog layout
 	d := container.NewVBox(
 		widget.NewLabel(err.Error()),
 		widget.NewButton("OK", func() {
-			// only close app if can't recover
-			if fatal {
-				A.Quit()
-			}
+			A.Quit()
 		}),
 	)
 

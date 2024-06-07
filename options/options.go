@@ -10,8 +10,6 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-// TODO: make so new menu not allocated each time run
-
 func OptionsCallback() {
 	// create whitelist file extension entry box
 	whitelist := widget.NewEntry()

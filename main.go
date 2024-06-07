@@ -83,7 +83,7 @@ func main() {
 
 	// ensure app has access to ffprobe
 	if err := background.CheckFfprobe(); err != nil {
-		global.ErrorDialog(err, true)
+		global.ErrorDialog(err)
 	}
 
 	// run app

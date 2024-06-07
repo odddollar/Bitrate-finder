@@ -13,7 +13,7 @@ func FolderCallback() {
 	dialog.ShowFolderOpen(func(lu fyne.ListableURI, err error) {
 		// show error dialog then close app
 		if err != nil {
-			global.ErrorDialog(err, true)
+			global.ErrorDialog(err)
 		}
 
 		// check if nothing has been selected
