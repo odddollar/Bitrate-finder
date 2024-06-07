@@ -10,10 +10,9 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-func OptionsCallback() {
-	// declare dialog so submit and cancel functions can use
-	var d *dialog.FormDialog
+// TODO: make so new menu not allocated each time run
 
+func OptionsCallback() {
 	// create whitelist file extension entry box
 	whitelist := widget.NewEntry()
 	whitelist.SetText(global.WhitelistedExtensions)
@@ -42,7 +41,7 @@ func OptionsCallback() {
 	}
 
 	// create dialog using form items
-	d = dialog.NewForm(
+	d := dialog.NewForm(
 		"Options",
 		"Save",
 		"Cancel",
