@@ -14,8 +14,6 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-// TODO: add check for ffprobe availability
-
 // initialise main ui widgets
 func init() {
 	// initialise output box data binding
@@ -89,6 +87,11 @@ func init() {
 }
 
 func main() {
+	// ensure app has access to ffprobe
+	if err := background.CheckFfprobe(); err != nil {
+		global.ErrorDialog(err, true)
+	}
+
 	// run app
 	global.MainWindow.Show()
 	global.A.Run()

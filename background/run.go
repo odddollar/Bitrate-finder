@@ -81,7 +81,7 @@ func RunCallback() {
 
 	// handle error if unable to walk directory
 	if err != nil {
-		global.ErrorDialog(err)
+		global.ErrorDialog(err, true)
 	}
 
 	// add completion message
@@ -134,7 +134,7 @@ func getNumFiles(path string) int {
 	})
 
 	if err != nil {
-		global.ErrorDialog(err)
+		global.ErrorDialog(err, true)
 	}
 
 	return count

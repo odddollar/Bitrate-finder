@@ -8,12 +8,15 @@ import (
 
 // TODO: potentially make some errors non-fatal
 
-func ErrorDialog(err error) {
+func ErrorDialog(err error, fatal bool) {
 	// create dialog layout
 	d := container.NewVBox(
 		widget.NewLabel(err.Error()),
 		widget.NewButton("OK", func() {
-			A.Quit()
+			// only close app if can't recover
+			if fatal {
+				A.Quit()
+			}
 		}),
 	)
 

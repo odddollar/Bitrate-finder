@@ -39,7 +39,7 @@ func ExportCallback() {
 	d := dialog.NewFileSave(func(uc fyne.URIWriteCloser, err error) {
 		// show error dialog then close app
 		if err != nil {
-			global.ErrorDialog(err)
+			global.ErrorDialog(err, true)
 		}
 
 		// prevent crashing if nothing was selected
@@ -51,14 +51,14 @@ func ExportCallback() {
 		// write header to file
 		_, err = uc.Write([]byte("Bitrate (Kb/s),Path\n"))
 		if err != nil {
-			global.ErrorDialog(err)
+			global.ErrorDialog(err, true)
 		}
 
 		// write each line to file
 		for _, i := range outCSV {
 			_, err = uc.Write([]byte(i + "\n"))
 			if err != nil {
-				global.ErrorDialog(err)
+				global.ErrorDialog(err, true)
 			}
 		}
 
