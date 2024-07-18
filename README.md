@@ -24,7 +24,7 @@ Built using the [Fyne](https://fyne.io/) GUI framework for Go, Bitrate Finder ca
 git clone https://github.com/odddollar/Bitrate-finder.git
 cd Bitrate-finder
 go install fyne.io/fyne/v2/cmd/fyne@latest // installs the necessary Fyne tooling
-fyne package
+fyne package --release
 ```
 
 ## Screenshots
