@@ -2,8 +2,8 @@ package main
 
 import (
 	"Bitrate-finder/background"
+	"Bitrate-finder/dialogs"
 	"Bitrate-finder/global"
-	"Bitrate-finder/options"
 	"image/color"
 
 	"fyne.io/fyne/v2"
@@ -11,6 +11,7 @@ import (
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
+	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -33,7 +34,7 @@ func main() {
 	global.FolderSelect = widget.NewButton("...", background.FolderCallback)
 
 	// create options button to open options window
-	global.Opt = widget.NewButton("Options", options.OptionsCallback)
+	global.Opt = widget.NewButton("Options", dialogs.OptionsCallback)
 
 	// create run button widget
 	global.Run = widget.NewButton("Run", background.RunCallback)
@@ -50,6 +51,9 @@ func main() {
 
 	// button that exports output box content to csv
 	global.ExportCSV = widget.NewButton("Export to CSV", background.ExportCallback)
+
+	// button to show about information
+	global.About = widget.NewButtonWithIcon("", theme.InfoIcon(), dialogs.AboutCallback)
 
 	// main content hierarchy
 	content := container.NewBorder(
@@ -69,7 +73,10 @@ func main() {
 			nil,
 			nil,
 			nil,
-			global.ExportCSV,
+			container.NewHBox(
+				global.ExportCSV,
+				global.About,
+			),
 			global.Progress,
 		),
 		nil,

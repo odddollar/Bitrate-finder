@@ -25,3 +25,4 @@ var Run *widget.Button
 var OutputBox *widget.Entry
 var Progress *widget.ProgressBar
 var ExportCSV *widget.Button
+var About *widget.Button

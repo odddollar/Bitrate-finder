@@ -1,4 +1,4 @@
-package options
+package dialogs
 
 import (
 	"Bitrate-finder/global"
