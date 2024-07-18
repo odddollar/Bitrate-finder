@@ -26,6 +26,7 @@ func RunCallback() {
 	global.Opt.Disable()
 	global.Run.Disable()
 	global.ExportCSV.Disable()
+	global.About.Disable()
 
 	// set progress bar maximum value
 	global.Progress.Max = float64(getNumFiles(global.Path.Text))
@@ -93,6 +94,7 @@ func RunCallback() {
 	global.Opt.Enable()
 	global.Run.Enable()
 	global.ExportCSV.Enable()
+	global.About.Enable()
 }
 
 func getBitrate(path string) int {
